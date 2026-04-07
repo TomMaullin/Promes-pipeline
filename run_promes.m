@@ -16,7 +16,7 @@ function run_promes()
     make_header(ver)
     
     % Load in data directory
-    data_dir = "C:\Users\kn24969\Documents\PROMES\Resources\wip_data2\BIDS";
+    data_dir = % to enter...
     
     % Check SPM is loaded
     if isempty(which('spm'))
