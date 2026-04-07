@@ -1,4 +1,4 @@
-function run_promes()
+function run_promes(data_dir, ses_no, sub_no)
 
     % Get path of this function
     promes_function = mfilename('fullpath');
@@ -15,9 +15,6 @@ function run_promes()
     % Make a header to let user know we are starting
     make_header(ver)
     
-    % Load in data directory
-    data_dir = % to enter...
-    
     % Check SPM is loaded
     if isempty(which('spm'))
         my_log('SPM not found. Halting execution.')
@@ -33,17 +30,12 @@ function run_promes()
     end
     
     % Get first session and subject
-    ses_dir = fullfile(data_dir, "sub-001", "ses-01");
+    ses_dir = fullfile(data_dir, sprintf('sub-%03d', sub_no), sprintf('ses-%02d', ses_no));
     
     % Create a struct to house filenames
     analysis_info = {};
     analysis_info.data_dir = data_dir;
     analysis_info.ses_dir = ses_dir;
-    
-    % Get subject and session numbers
-    [sub_no, ses_no] = get_sub_ses_nos(ses_dir);
-    analysis_info.sub_no = sub_no;
-    analysis_info.ses_no = ses_no;
     
     % Events csv
     analysis_info.events = fullfile(char(ses_dir),'events.tsv');
