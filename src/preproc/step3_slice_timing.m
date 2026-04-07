@@ -1,10 +1,12 @@
     
 function analysis_info = step3_slice_timing(analysis_info)
 
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
     
     % Get json data for func
     func_json =  analysis_info.func_json;
@@ -63,6 +65,6 @@ function analysis_info = step3_slice_timing(analysis_info)
     spm_jobman('run', matlabbatch);
 
     % Update analysis info
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('ausub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
+    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('ausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
 
 end

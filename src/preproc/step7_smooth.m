@@ -1,9 +1,11 @@
 function analysis_info = step7_smooth(analysis_info)
-    
-    % Get subject, session numbers and session dir
+
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
 
     func_dir = fullfile(char(ses_dir), 'func');
 
@@ -17,7 +19,8 @@ function analysis_info = step7_smooth(analysis_info)
 
     % Filename to output masked data to
     masked_file = fullfile(func_dir, ...
-        sprintf('mwausub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
+        sprintf('mwausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', ...
+        sub_no, ses_no, task_name, run_no));
 
     % -----------------------------------------------------------------
     % Read data
@@ -84,6 +87,8 @@ function analysis_info = step7_smooth(analysis_info)
     clear matlabbatch
 
     % Update files
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('smwausub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
-
+    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', ...
+        sprintf('smwausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', ...
+        sub_no, ses_no, task_name, run_no));
+    
 end

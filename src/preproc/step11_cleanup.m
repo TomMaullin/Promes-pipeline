@@ -1,9 +1,11 @@
 function analysis_info = step11_cleanup(analysis_info)
 
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
 
     % Inform user
     my_log('Cleaning up files...')
@@ -17,17 +19,17 @@ function analysis_info = step11_cleanup(analysis_info)
 
     % Delete redundant functional files
     delete(fullfile(char(ses_dir), 'func', 'art_*'));
-    delete(fullfile(char(ses_dir), 'func', sprintf('dsmwausub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('smwausub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('mwausub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('wausub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('ausub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('usub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('wfmag_sub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('wmeanusub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('meanusub-%03d_ses-%02d*AudCat_run-1*.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('rp_sub-%03d_ses-%02d*AudCat_run-1*.txt', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'func', sprintf('sub-%03d_ses-%02d*AudCat_run-1*.mat', sub_no, ses_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('dsmwausub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('smwausub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('mwausub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('wausub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('ausub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('usub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('wfmag_sub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('wmeanusub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('meanusub-%03d_ses-%02d*%s_run-%d*.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('rp_sub-%03d_ses-%02d*%s_run-%d*.txt', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(ses_dir), 'func', sprintf('sub-%03d_ses-%02d*%s_run-%d*.mat', sub_no, ses_no, task_name, run_no)));
 
     % Delete redundant structural files
     delete(fullfile(char(ses_dir), 'anat', sprintf('c*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));

@@ -1,20 +1,33 @@
 function analysis_info = step9_denoising(analysis_info)
 
+    % ---------------------------------------------------------------------
     % This function performs quite a few steps in one. It does this by
-    % using SPM CONN to perform a regression containing the following
+    % using SPM CONN to perform a regression explicitly containing the 
+    % following:
     %
     % 1 - Task condition (this includes the on off stimuli for the task)
     % 2 - Rest condition (just in-case any dummy scans still remain - 
     %                     MARKER MAY REMOVE)
-    % 3 -
+    % 3 - Realignment parameters (+ derivatives) from step 2 of the
+    %     pipeline
+    % 4 - Outliers from step 8 (ART)
+    % 5 - WM nuiscance covariates
+    % 6 - CSF nuiscance covariates
+    %
+    % It also implicitly includes in the regression:
+    % 
+    % 7 -
+    % ---------------------------------------------------------------------
 
     % Directories
     conn_dir = char(fileparts(which('conn')));
 
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
     
     % Get json and nii data for functional
     func_json =  analysis_info.func_json;
@@ -366,6 +379,8 @@ function analysis_info = step9_denoising(analysis_info)
     conn_batch(batch);
 
     % Update files
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('dsmwausub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
+    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', ...
+        sprintf('dsmwausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', ...
+        sub_no, ses_no, task_name, run_no));
 
 end

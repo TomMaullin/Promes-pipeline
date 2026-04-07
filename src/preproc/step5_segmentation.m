@@ -1,9 +1,9 @@
 function analysis_info = step5_segmentation(analysis_info)
-        
-    % Get subject, session numbers and session dir
+
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
     
     % Write matlabbatch
     clear matlabbatch

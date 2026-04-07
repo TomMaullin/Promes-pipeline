@@ -1,10 +1,12 @@
 
 function analysis_info = step2_realign_and_unwarp(analysis_info)
 
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
 
     % Get the path for the functional data
     func_file = analysis_info.func_vol_curr;
@@ -46,9 +48,8 @@ function analysis_info = step2_realign_and_unwarp(analysis_info)
     spm_jobman('run', matlabbatch);
 
     % Update analysis info
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('usub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
-    analysis_info.func_mean_curr = fullfile(char(ses_dir), 'func', sprintf('meanusub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
-    analysis_info.realign_params = fullfile(char(ses_dir), 'func', sprintf('rp_sub-%03d_ses-%02d_task-AudCat_run-1_bold.txt', sub_no, ses_no));
-
+    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('usub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
+    analysis_info.func_mean_curr = fullfile(char(ses_dir), 'func', sprintf('meanusub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
+    analysis_info.realign_params = fullfile(char(ses_dir), 'func', sprintf('rp_sub-%03d_ses-%02d_task-%s_run-%d_bold.txt', sub_no, ses_no, task_name, run_no));
 
 end

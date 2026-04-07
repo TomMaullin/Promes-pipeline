@@ -1,4 +1,4 @@
-function run_promes(data_dir, ses_no, sub_no)
+function run_promes(data_dir,ses_no,sub_no,task_name,run_no)
 
     % Get path of this function
     promes_function = mfilename('fullpath');
@@ -36,12 +36,17 @@ function run_promes(data_dir, ses_no, sub_no)
     analysis_info = {};
     analysis_info.data_dir = data_dir;
     analysis_info.ses_dir = ses_dir;
+    analysis_info.ses_no = ses_no;
+    analysis_info.sub_no = sub_no;
+    analysis_info.task_name = task_name;
+    analysis_info.run_no = run_no;
     
     % Events csv
     analysis_info.events = fullfile(char(ses_dir),'events.tsv');
     
     % Add functional data
-    analysis_info.func_vol_orig = fullfile(char(ses_dir), 'func', sprintf('sub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
+    analysis_info.func_vol_orig = fullfile(char(ses_dir), 'func',...
+        sprintf('sub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
     analysis_info.func_vol_curr = analysis_info.func_vol_orig;
     
     % Add structural data
@@ -53,7 +58,8 @@ function run_promes(data_dir, ses_no, sub_no)
     analysis_info.mag1 = fullfile(char(ses_dir), 'fmap', sprintf('sub-%03d_ses-%02d_magnitude1.nii', sub_no, ses_no));
     
     % Add jsons
-    analysis_info.func_json =  fullfile(char(ses_dir), 'func', sprintf('sub-%03d_ses-%02d_task-AudCat_run-1_bold.json', sub_no, ses_no));
+    analysis_info.func_json =  fullfile(char(ses_dir), 'func',...
+        sprintf('sub-%03d_ses-%02d_task-%s_run-%d_bold.json', sub_no, ses_no, task_name, run_no));
     analysis_info.phas_json =  fullfile(char(ses_dir), 'fmap', sprintf('sub-%03d_ses-%02d_phasediff.json', sub_no, ses_no));
     
     % Unzip the functional nii.gz files if needed

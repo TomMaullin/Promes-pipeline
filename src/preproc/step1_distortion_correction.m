@@ -1,11 +1,13 @@
 
 function analysis_info = step1_distortion_correction(analysis_info)
     
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
-
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
+    
     % Get json data for func and phase
     func_json = analysis_info.func_json;
     phas_json =  analysis_info.phas_json;

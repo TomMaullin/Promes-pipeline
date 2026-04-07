@@ -1,9 +1,11 @@
 function analysis_info = step10_concatenation(analysis_info)
 
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
     
     % Read in func_file
     func_file =  analysis_info.func_vol_curr;
@@ -90,13 +92,12 @@ function analysis_info = step10_concatenation(analysis_info)
     % Save rest volumes    
     my_log('Removing task volumes...')
     V_rest = V_func(rest_vol_idx);
-
     out_file = fullfile(char(ses_dir), 'func', ...
-        sprintf('sub-%03d_ses-%02d_task-AudCat_cleaned_rest_only_bold.nii', sub_no, ses_no));
+        sprintf('sub-%03d_ses-%02d_task-%s_run-%d_cleaned_rest_only_bold.nii', ...
+        sub_no, ses_no, task_name, run_no));
 
     % Merge selected volumes into new 4D NIfTI
     spm_file_merge(V_rest, out_file);
-
 
     % Update files
     analysis_info.func_vol_curr = out_file;

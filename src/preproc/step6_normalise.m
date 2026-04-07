@@ -1,9 +1,11 @@
 function analysis_info = step6_normalise(analysis_info)
 
-    % Get subject, session numbers and session dir
+    % Load in details
+    ses_dir = analysis_info.ses_dir;
     sub_no = analysis_info.sub_no;
     ses_no = analysis_info.ses_no;
-    ses_dir = analysis_info.ses_dir;
+    task_name = analysis_info.task_name;
+    run_no = analysis_info.run_no;
 
     % Get the path for the aligned functional data
     au_func_file = analysis_info.func_vol_curr;
@@ -43,7 +45,7 @@ function analysis_info = step6_normalise(analysis_info)
     spm_jobman('run', matlabbatch);
 
     % Update analysis info
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('wausub-%03d_ses-%02d_task-AudCat_run-1_bold.nii', sub_no, ses_no));
+    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('wausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
     analysis_info.anat_vol_curr = fullfile(char(ses_dir), 'anat', sprintf('wmsub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));
     analysis_info.c1_file_curr = fullfile(char(ses_dir), 'anat', sprintf('wc1sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));
     analysis_info.c2_file_curr = fullfile(char(ses_dir), 'anat', sprintf('wc2sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));
