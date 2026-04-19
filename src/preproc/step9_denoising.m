@@ -150,8 +150,8 @@ function analysis_info = step9_denoising(analysis_info)
     Setup.rois.files{1}{3}{1}{3} = csf_vol;
 
     % Remaining rois
-    Setup.rois.files{1}{4}{1}{1} = fullfile(conn_dir,'rois', 'networks.nii');
-    Setup.rois.files{1}{5}{1}{1} = fullfile(conn_dir,'rois', 'atlas.nii');
+    Setup.rois.files{1}{4}{1}{1} = fullfile(conn_dir,'rois','networks.nii');
+    Setup.rois.files{1}{5}{1}{1} = fullfile(conn_dir,'rois','atlas.nii');
     % Setup.rois.files{1}{4}{1}{2} = Skipped... same as with the functional ones
     
     % Load in networks and atlas nii
@@ -363,7 +363,7 @@ function analysis_info = step9_denoising(analysis_info)
     %CONN_x.SetupPreproc.log{1} skipped for now...
 
     % Save the struct
-    struct_fname = fullfile(char(ses_dir),'step9_denoise.mat');
+    struct_fname = fullfile(char(ses_dir),sprintf('step9_denoise_task-%s_run-%d.mat', task_name, run_no));
     CONN_x.filename = struct_fname;
     save(struct_fname, 'CONN_x');
 

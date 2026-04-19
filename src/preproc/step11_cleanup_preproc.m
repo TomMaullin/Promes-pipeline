@@ -1,4 +1,4 @@
-function analysis_info = step11_cleanup(analysis_info)
+function analysis_info = step11_cleanup_preproc(analysis_info)
 
     % Load in details
     ses_dir = analysis_info.ses_dir;
@@ -11,8 +11,8 @@ function analysis_info = step11_cleanup(analysis_info)
     my_log('Cleaning up files...')
 
     % Remove denoising files
-    delete(fullfile(char(ses_dir),'step9_denoise.mat'));
-    denoise_dir = fullfile(char(ses_dir), 'step9_denoise');
+    delete(fullfile(char(ses_dir),sprintf('step9_denoise_task-%s_run-%d.mat', task_name, run_no)));
+    denoise_dir = fullfile(char(ses_dir), sprintf('step9_denoise_task-%s_run-%d', task_name, run_no));
     if exist(denoise_dir, 'dir')
         rmdir(denoise_dir, 's');
     end
@@ -33,7 +33,7 @@ function analysis_info = step11_cleanup(analysis_info)
 
     % Delete redundant structural files
     delete(fullfile(char(ses_dir), 'anat', sprintf('c*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'anat', sprintf('wc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no))); % MARKER: Might want to keep these for later
+    % delete(fullfile(char(ses_dir), 'anat', sprintf('wc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
     delete(fullfile(char(ses_dir), 'anat', sprintf('ewc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
     delete(fullfile(char(ses_dir), 'anat', sprintf('msub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
     delete(fullfile(char(ses_dir), 'anat', sprintf('y_sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));

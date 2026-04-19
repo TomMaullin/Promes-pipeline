@@ -20,7 +20,11 @@ function analysis_info = step2_realign_and_unwarp(analysis_info)
     % Create matlabbatch
     clear matlabbatch
     matlabbatch{1}.spm.spatial.realignunwarp.data.scans = reshape(arrayfun(@(v) sprintf('%s,%d', func_file, v), 1:nVols, 'UniformOutput', false), [], 1);
-    matlabbatch{1}.spm.spatial.realignunwarp.data.pmscan = {char(analysis_info.vdm5 + ",1")};    
+    if isfield(analysis_info, 'vdm5')
+        matlabbatch{1}.spm.spatial.realignunwarp.data.pmscan = {char(analysis_info.vdm5 + ",1")};    
+    else
+        matlabbatch{1}.spm.spatial.realignunwarp.data.pmscan = {};
+    end
     matlabbatch{1}.spm.spatial.realignunwarp.eoptions.quality = 0.95;
     matlabbatch{1}.spm.spatial.realignunwarp.eoptions.sep = 1.5;
     matlabbatch{1}.spm.spatial.realignunwarp.eoptions.fwhm = 1;

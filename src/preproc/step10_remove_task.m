@@ -1,4 +1,4 @@
-function analysis_info = step10_concatenation(analysis_info)
+function analysis_info = step10_remove_task(analysis_info)
 
     % Load in details
     ses_dir = analysis_info.ses_dir;
