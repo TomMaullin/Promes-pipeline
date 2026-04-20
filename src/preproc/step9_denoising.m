@@ -6,8 +6,7 @@ function analysis_info = step9_denoising(analysis_info)
     % following:
     %
     % 1 - Task condition (this includes the on off stimuli for the task)
-    % 2 - Rest condition (just in-case any dummy scans still remain - 
-    %                     MARKER MAY REMOVE)
+    % 2 - Rest condition 
     % 3 - Realignment parameters (+ derivatives) from step 2 of the
     %     pipeline
     % 4 - Outliers from step 8 (ART)
@@ -16,7 +15,11 @@ function analysis_info = step9_denoising(analysis_info)
     %
     % It also implicitly includes in the regression:
     % 
-    % 7 -
+    % 7 - Detrending (long term drift regressors)
+    % 8 - Band pass filter (Fourier basis).
+    %
+    % Voxelwise despiking is also performed at this stage.
+    %
     % ---------------------------------------------------------------------
 
     % Directories
