@@ -31,7 +31,8 @@ function analyses_info = step16_cleanup_connectivity(analyses_info)
     end
 
     % Delete redundant functional files
-    delete(fullfile(char(sub_dir),'dsub-001_cleaned_rest_only_bold.nii'));
+    delete(fullfile(char(sub_dir), sprintf('LI_r_sub-%03d_ses-%02d*%s_run-%d*_spmT_0001.nii', sub_no, ses_no, task_name, run_no)));
+    delete(fullfile(char(sub_dir),'dsub-*_cleaned_rest_only_bold.nii'));
 
     % Delete redundant LI files
     delete(fullfile(char(sub_dir),'LI_boot.ps'));
