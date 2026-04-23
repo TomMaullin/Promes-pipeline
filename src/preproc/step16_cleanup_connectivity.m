@@ -2,9 +2,6 @@ function analyses_info = step16_cleanup_connectivity(analyses_info)
 
     % Load in details
     sub_dir = analyses_info{1}.sub_dir;
-    ses_dir = analyses_info{1}.ses_dir;
-    sub_no = analyses_info{1}.sub_no;
-    ses_no = analyses_info{1}.ses_no;
 
     % Get the number of analyses
     n_analyses = numel(analyses_info);
@@ -31,7 +28,6 @@ function analyses_info = step16_cleanup_connectivity(analyses_info)
     end
 
     % Delete redundant functional files
-    delete(fullfile(char(sub_dir), sprintf('LI_r_sub-%03d_ses-%02d*%s_run-%d*_spmT_0001.nii', sub_no, ses_no, task_name, run_no)));
     delete(fullfile(char(sub_dir),'dsub-*_cleaned_rest_only_bold.nii'));
 
     % Delete redundant LI files
@@ -39,16 +35,25 @@ function analyses_info = step16_cleanup_connectivity(analyses_info)
     delete(fullfile(char(sub_dir),'LI_output.txt'));
     delete(fullfile(char(sub_dir),'LI_masking.ps'));
 
-    % Delete redundant structural files
-    delete(fullfile(char(ses_dir), 'anat', sprintf('wc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
-    delete(fullfile(char(ses_dir), 'anat', sprintf('ewc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
-
     % Clean up analysis info
     for i = 1:n_analyses
 
         % Get analysis info struct
         analysis_info = analyses_info{i};
         analysis_info = rmfield(analysis_info, 'func_mean_curr');
+
+        % Get fields
+        task_name = analyses_info{i}.task_name;
+        sub_dir = analyses_info{i}.sub_dir;
+        sub_no = analyses_info{i}.sub_no;
+        ses_no = analyses_info{i}.ses_no;
+        ses_dir = analyses_info{i}.ses_dir;
+        run_no = analyses_info{i}.run_no;
+
+        % Delete redundant task files and structural files
+        delete(fullfile(char(sub_dir), sprintf('LI_r_sub-%03d_ses-%02d*%s_run-%d*_spmT_0001.nii', sub_no, ses_no, task_name, run_no)));
+        delete(fullfile(char(ses_dir), 'anat', sprintf('wc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
+        delete(fullfile(char(ses_dir), 'anat', sprintf('ewc*sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)));
 
         % Remove dead fields
         if analysis_info.run_rest
