@@ -1,10 +1,10 @@
-function analyses_info = step13_connectivity(analyses_info)
+function analyses_info = step14_connectivity(analyses_info)
 
     % ---------------------------------------------------------------------
     %
     % Following concatenation, we need to set up conn from scratch as we
     % are now using the shortened timeseries. To do so, we essentially
-    % re-do step_9 with slightly modified inputs.
+    % re-do step_10 with slightly modified inputs.
     % 
     % Note: This time, we are not doing any denoising, we are only
     % rerunning these steps to ensure CONN has the correct files in the

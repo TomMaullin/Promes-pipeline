@@ -1,4 +1,4 @@
-function analysis_info = step8_art(analysis_info)
+function analysis_info = step9_art(analysis_info)
 
     % ---------------------------------------------------------------------
     % Developer note: A good thread on the conn_module can be found here
@@ -13,7 +13,7 @@ function analysis_info = step8_art(analysis_info)
     run_no = analysis_info.run_no;
 
     % Files
-    func_file = analysis_info.func_vol_curr;
+    func_file = analysis_info.func_vol_curr_rest;
 
     % Run ART from CONN
     my_log('Running ART...')
@@ -21,7 +21,7 @@ function analysis_info = step8_art(analysis_info)
 
     % Save outputs
     analysis_info.art_outliers = fullfile(char(ses_dir), 'func', ...
-        sprintf('art_regression_outliers_smwausub-%03d_ses-%02d_task-%s_run-%d_bold.mat', ...
+        sprintf('art_regression_outliers_s8mwausub-%03d_ses-%02d_task-%s_run-%d_bold.mat', ...
         sub_no, ses_no, task_name, run_no));
     
 end

@@ -79,16 +79,31 @@ function analysis_info = step7_smooth(analysis_info)
     matlabbatch{1}.spm.spatial.smooth.fwhm = [8 8 8];
     matlabbatch{1}.spm.spatial.smooth.dtype = 0;
     matlabbatch{1}.spm.spatial.smooth.im = 1;
-    matlabbatch{1}.spm.spatial.smooth.prefix = 's';
+    matlabbatch{1}.spm.spatial.smooth.prefix = 's8';
 
     % Run in SPM jobman
-    my_log('Smoothing...')
+    my_log('Smoothing rest...')
+    spm_jobman('run', matlabbatch);
+    clear matlabbatch
+
+    % Same for task
+    matlabbatch{1}.spm.spatial.smooth.data = mwu_func_vols;
+    matlabbatch{1}.spm.spatial.smooth.fwhm = [6 6 6];
+    matlabbatch{1}.spm.spatial.smooth.dtype = 0;
+    matlabbatch{1}.spm.spatial.smooth.im = 1;
+    matlabbatch{1}.spm.spatial.smooth.prefix = 's6';
+
+    % Run in SPM jobman
+    my_log('Smoothing task...')
     spm_jobman('run', matlabbatch);
     clear matlabbatch
 
     % Update files
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', ...
-        sprintf('smwausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', ...
-        sub_no, ses_no, task_name, run_no));
-    
+    analysis_info.func_vol_curr = prepend(analysis_info.func_vol_curr, 'm');
+    analysis_info.func_vol_curr_rest = prepend(analysis_info.func_vol_curr, char('s8'));
+    analysis_info.func_vol_curr_task = prepend(analysis_info.func_vol_curr, char('s6'));
+
+    % Remove func_vol_curr
+    analysis_info = rmfield(analysis_info, 'func_vol_curr');
+
 end

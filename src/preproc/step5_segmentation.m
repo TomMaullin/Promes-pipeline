@@ -56,5 +56,4 @@ function analysis_info = step5_segmentation(analysis_info)
     analysis_info.deform = fullfile(char(ses_dir), 'anat', sprintf('y_sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));
     analysis_info.anat_vol_curr = fullfile(char(ses_dir), 'anat', sprintf('msub-%03d_ses-%02d_T1w.nii', sub_no, ses_no)); 
 
-
 end

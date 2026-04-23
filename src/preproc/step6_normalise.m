@@ -45,7 +45,7 @@ function analysis_info = step6_normalise(analysis_info)
     spm_jobman('run', matlabbatch);
 
     % Update analysis info
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('wausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
+    analysis_info.func_vol_curr = prepend(analysis_info.func_vol_curr, 'w');
     analysis_info.anat_vol_curr = fullfile(char(ses_dir), 'anat', sprintf('wmsub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));
     analysis_info.c1_file_curr = fullfile(char(ses_dir), 'anat', sprintf('wc1sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));
     analysis_info.c2_file_curr = fullfile(char(ses_dir), 'anat', sprintf('wc2sub-%03d_ses-%02d_T1w.nii', sub_no, ses_no));

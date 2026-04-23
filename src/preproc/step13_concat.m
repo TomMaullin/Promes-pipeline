@@ -1,8 +1,8 @@
-function analyses_info = step12_concat(analyses_info)
+function analyses_info = step13_concat(analyses_info)
 
-    % Concatenate analyses_info{i}.func_vol_curr into one 4D NIfTI using SPM
-    % Before concatenation, voxelwise demean and standardise each run across
-    % time (within-run z-scoring).
+    % Concatenate analyses_info{i}.func_vol_curr_rest into one 4D NIfTI using 
+    % SPM. Before concatenation, voxelwise demean and standardise each run 
+    % across time (within-run z-scoring).
 
     % Tell user
     my_log('Concatenating runs...')
@@ -18,12 +18,12 @@ function analyses_info = step12_concat(analyses_info)
     for i = 1:n_analyses
 
         % Check the analysis has a final functional stored
-        if ~isfield(analyses_info{i}, 'func_vol_curr')
-            error('analyses_info{%d} missing func_vol_curr.', i);
+        if ~isfield(analyses_info{i}, 'func_vol_curr_rest')
+            error('analyses_info{%d} missing func_vol_curr_rest.', i);
         end
 
         % Get the final functional stored
-        func_file = char(analyses_info{i}.func_vol_curr);
+        func_file = char(analyses_info{i}.func_vol_curr_rest);
 
         % Check it exists
         if ~exist(func_file, 'file')
@@ -46,7 +46,7 @@ function analyses_info = step12_concat(analyses_info)
     for i = 1:n_analyses
 
         % Load volumes
-        V = spm_vol(char(analyses_info{i}.func_vol_curr));
+        V = spm_vol(char(analyses_info{i}.func_vol_curr_rest));
 
         % Save one as a reference
         if isempty(ref_dim)
@@ -86,7 +86,7 @@ function analyses_info = step12_concat(analyses_info)
     for i = 1:n_analyses
 
         % Load volume headers for this run
-        Vin = spm_vol(char(analyses_info{i}.func_vol_curr));
+        Vin = spm_vol(char(analyses_info{i}.func_vol_curr_rest));
         n_vols = numel(Vin);
 
         % Read entire run into memory as 4D array: [X Y Z T]

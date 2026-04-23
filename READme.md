@@ -41,8 +41,12 @@ run_nos = % TO FILL
 % Name of task
 task_names = % TO FILL
 
+% Run task and rest pipelines? (fill in true to run and false to not run)
+run_task = % TO FILL
+run_rest = % TO FILL
+
 % Run promes for data directory
-analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos);
+analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
 ```
 
 To run the pipeline, you must replace `TO FILL` with the appropriate analysis details and then run the script in MatLab. To explain what these details should look like, here are a few examples.
@@ -62,13 +66,19 @@ sub_nos = 3;
 % Name of task
 task_names = "AudCat";
 
+% Run task and rest pipelines? (fill in true to run and false to not run)
+run_task = false;
+run_rest = true;
+
 % Run promes for data directory
-analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos);
+analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
 ```
 
-Note that `'C:/Documents/BIDS'` should be replaced with the path to the BIDS dataset on your computer.
+Here, we have set `run_rest=true` - this means the code will generate LIs for concatenated rest. We have also set `run_task=false;` - this means we *will not* generate task-based LIs. If you were to change this to `run_task=true;`, task-based LIs *would* be generated.
 
-**Example 2:** Suppose instead you want to generate connectivity maps by concatenating rest from both the first and second runs of subject 4's first session of the `AudCat` task. You could fill in the details as follows.
+Note that `'C:/Documents/BIDS'` should be replaced with the path to the BIDS dataset on your computer. 
+
+**Example 2:** Suppose instead you want to generate rest LIs by concatenating rest from both the first and second runs of subject 4's first session of the `AudCat` task. You could fill in the details as follows.
 
 ```
 % Set data directory
@@ -82,13 +92,20 @@ sub_nos = [4 4];
 % Name of task
 task_names = ["AudCat","AudCat"];
 
+% Run task and rest pipelines? (fill in true to run and false to not run)
+run_task = false;
+run_rest = true;
+
 % Run promes for data directory
-analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos);
+analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
 ```
 
 The first entries of the lists tell us that we are first looking at session `1`, run `1` of subject `4` for `AudCat`. The second entries tell us we are then looking at session `1`, run `2` of subject `4`. Note that `ses_nos`, `run_nos`, `sub_nos`, and `task_names` must all have the same length.
 
 Given these inputs, the PROMES pipeline will run preprocessing and extract the rest volumes for each run separately. It will then concatenate the resultant rest time-series across runs to obtain a single 4d image. Seed-based rs-connectivity and LI are computed from the the final 4d image.
+
+If you change the `run_task` line to `run_task = true;`, then task based fMRI analyses will also be performed for each subject-session-run combination *seperately*. This means you will get a task-based LI per session (we can discuss whether you would like to combine these over sessions at a later date).
+
 
 **Example 3:** If you want to generate connectivity maps by concatenating rest from both tasks (`covertverb` and `AudCat`) and runs of subject 2's first session, you could use
 
@@ -104,8 +121,12 @@ sub_nos = [2, 2, 2, 2];
 % Name of task
 task_names = ["covertverb","covertverb","AudCat","AudCat"];
 
+% Run task and rest pipelines? (fill in true to run and false to not run)
+run_task = false;
+run_rest = true;
+
 % Run promes for data directory
-analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos);
+analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
 ```
 
 **Note:** The task names must match those used on the BIDS filenames.
@@ -121,8 +142,9 @@ Once you fill the above and press run, the following analysis steps will be exec
  - *Step 5: Segmentation.*
  - *Step 6: Normalise.*
  - *Step 7: Smooth.* Performed with 8MM FWHM.
- - *Step 8: ART outlier detection.* Note, this only computes the outliers, they are regressed out of the task data in Step 9.
- - *Step 9: Denoising.* This step performs voxelwise despiking and then regresses out the following from the task data:
+ - *Step 8: Task-based analysis*. A T-statistic map from a GLM is constructed.
+ - *Step 9: ART outlier detection.* Note, this only computes the outliers, they are regressed out of the task data in Step 10.
+ - *Step 10: Denoising.* This step performs voxelwise despiking and then regresses out the following from the task data:
    1. Task condition, 
    2. Rest condition, 
    3. Realignment parameters (plus derivatives) from step 2,
@@ -131,15 +153,15 @@ Once you fill the above and press run, the following analysis steps will be exec
    6. CSF nuisance covariates,
    7. Detrending covariates (long term drift) regressors,
    8. A Fourier basis representing a band pass filter.
- - *Step 10: Remove task.* This step removes all task volumes from the timeseries (accounting for up to 15s possible HRF delays), to leave only the volumes which can be reasonably treated as a proxy for resting-state data.
- - *Step 11: Clean-up.* This step removes all but those files which will be taken forward in the analysis.
+ - *Step 11: Remove task.* This step removes all task volumes from the timeseries (accounting for up to 15s possible HRF delays), to leave only the volumes which can be reasonably treated as a proxy for resting-state data.
+ - *Step 12: Clean-up.* This step removes all but those files which will be taken forward in the analysis.
 
 After the above steps have been executed for each run separately, the following are run:
 
- - *Step 12: Concatenate.* The 4D rest timeseries from each run are concatenated together into a single 4D volume. Each run's timeseries is also independently standardised and demeaned during this step (this prevents the 'jumps' in signal between sessions from influencing the connectivity estimates).
- - *Step 13: Connectivity.* Seed-based connectivity maps are created in CONN using the 4D volumes from step 12. The seeds used are: `networks.Language.IFG (L) (-51,26,2)`, `networks.Language.IFG (R) (54,28,1)`, `networks.Language.pSTG (L) (-57,-47,15)` and `networks.Language.pSTG (R) (59,-42,13)`.
- - *Step 14: LI Computation.* Lateralisation indices are computed for each of the four seed-based connectivity maps from step 13.
- - *Step 15: Clean-up.* Redundant files are deleted to save memory.
+ - *Step 13: Concatenate.* The 4D rest timeseries from each run are concatenated together into a single 4D volume. Each run's timeseries is also independently standardised and demeaned during this step (this prevents the 'jumps' in signal between sessions from influencing the connectivity estimates).
+ - *Step 14: Connectivity.* Seed-based connectivity maps are created in CONN using the 4D volumes from step 13. The seeds used are: `networks.Language.IFG (L) (-51,26,2)`, `networks.Language.IFG (R) (54,28,1)`, `networks.Language.pSTG (L) (-57,-47,15)` and `networks.Language.pSTG (R) (59,-42,13)`.
+ - *Step 15: LI Computation.* Lateralisation indices are computed for each of the four seed-based connectivity maps from step 14, as well as any task-based T-statistic maps computed in Step 8.
+ - *Step 16: Clean-up.* Redundant files are deleted to save memory.
 
 ## Outputs
 
@@ -150,14 +172,16 @@ After an analysis you will have the following files:
 | Cleaned Anatomical  | `BIDS/sub-???/ses-??/anat/wmsub-???_ses-??_T1w.nii`  | 
 | Cleaned Resting State Data (Single Run)  | `BIDS/sub-???/ses-??/func/sub-???_ses-??_task-???_run-?_cleaned_rest_only_bold.nii`  | 
 | Concatenated Resting State Data (Across Runs)  | `BIDS/sub-???/sub-???_cleaned_rest_only_bold.nii`  |
-| Connectivity Map (IFG L Seed)  | `BIDS/sub-???/conn_LI_IFG_L.nii`  |
-| Connectivity Map (IFG R Seed)  | `BIDS/sub-???/conn_LI_IFG_R.nii`  |
-| Connectivity Map (pSTG L Seed)  | `BIDS/sub-???/conn_LI_pSTG_L.nii`  |
-| Connectivity Map (pSTG R Seed)  | `BIDS/sub-???/conn_LI_pSTG_R.nii`  |
+| Connectivity Map (IFG L Seed)  | `BIDS/sub-???/conn_rs_IFG_L.nii`  |
+| Connectivity Map (IFG R Seed)  | `BIDS/sub-???/conn_rs_IFG_R.nii`  |
+| Connectivity Map (pSTG L Seed)  | `BIDS/sub-???/conn_rs_pSTG_L.nii`  |
+| Connectivity Map (pSTG R Seed)  | `BIDS/sub-???/conn_rs_pSTG_R.nii`  |
+| Contrast Map (for task based)  | `BIDS/sub-???/ses-??/func/sub-???_ses-??_task-???_run-?_con_0001.nii`  |
+| T-statistic Map (for task based)  | `BIDS/sub-???/ses-??/func/sub-???_ses-??_task-???_run-?_spmT_0001.nii`  |
 
 The final LI scores will be appended to `BIDS/LI_results.csv` (if the file does not already exist, it will be created). **Warning:** Every time you re-run the code the LI scores will be added to this file, so re-running the code may result in duplicate entries in the file.
 
 > If you would like me to modify the code to prevent it deleting any of the files output during preprocessing, please let me know - I am happy to amend this.
 
 
-*Page Author: Tom Maullin. Last Updated 19/04/26.*
+*Page Author: Tom Maullin. Last Updated 23/04/26.*

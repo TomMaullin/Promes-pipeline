@@ -1,4 +1,4 @@
-function analysis_info = step9_denoising(analysis_info)
+function analysis_info = step11_denoising(analysis_info)
 
     % ---------------------------------------------------------------------
     % This function performs quite a few steps in one. It does this by
@@ -34,7 +34,7 @@ function analysis_info = step9_denoising(analysis_info)
     
     % Get json and nii data for functional
     func_json =  analysis_info.func_json;
-    func_file =  analysis_info.func_vol_curr;
+    func_file =  analysis_info.func_vol_curr_rest;
     
     % Get nii for structural
     struct_file = analysis_info.anat_vol_curr;
@@ -382,8 +382,6 @@ function analysis_info = step9_denoising(analysis_info)
     conn_batch(batch);
 
     % Update files
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', ...
-        sprintf('dsmwausub-%03d_ses-%02d_task-%s_run-%d_bold.nii', ...
-        sub_no, ses_no, task_name, run_no));
+    analysis_info.func_vol_curr_rest = prepend(analysis_info.func_vol_curr_rest, 'd');
 
 end

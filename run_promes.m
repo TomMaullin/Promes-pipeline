@@ -1,4 +1,4 @@
-function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos)
+function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest)
     
     % Get path of this function
     promes_function = mfilename('fullpath');
@@ -58,6 +58,8 @@ function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos)
         
         % Create a struct to house filenames
         analysis_info = {};
+        analysis_info.run_task = run_task;
+        analysis_info.run_rest = run_rest;
         analysis_info.data_dir = data_dir;
         analysis_info.sub_dir = sub_dir;
         analysis_info.ses_dir = ses_dir;
@@ -139,31 +141,51 @@ function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos)
     my_log("   Cleaned Anatomical: ")
     my_log(['   ', analyses_info{1}.anat_vol_curr])
     my_log(" ")
-    for i = 1:n_analyses
-        my_log("   Cleaned rest for subject " + string(analyses_info{i}.sub_no) + ...
-         ", session " + string(analyses_info{i}.ses_no) + ...
-         ", run " + string(analyses_info{i}.run_no) + ...
-         ", for the " + string(analyses_info{i}.task_name) + " task:")
-        my_log("   " + string(analyses_info{i}.func_vol_curr))
+    if analyses_info{1}.run_rest
+        for i = 1:n_analyses
+            my_log("   Cleaned rest for subject " + string(analyses_info{i}.sub_no) + ...
+             ", session " + string(analyses_info{i}.ses_no) + ...
+             ", run " + string(analyses_info{i}.run_no) + ...
+             ", for the " + string(analyses_info{i}.task_name) + " task:")
+            my_log("   " + string(analyses_info{i}.func_vol_curr_rest))
+            my_log(" ")
+        end
+        my_log("   Concatenated Rest: ")
+        my_log("   " + string(analyses_info{1}.concat_file))
         my_log(" ")
+        my_log("   Connectivity (IFG L Seed): ")
+        my_log("   " + string(analyses_info{1}.connectivity.IFG.L))
+        my_log(" ")
+        my_log("   Connectivity (IFG R Seed): ")
+        my_log("   " + string(analyses_info{1}.connectivity.IFG.R))
+        my_log(" ")
+        my_log("   Connectivity (pSTG L Seed): ")
+        my_log("   " + string(analyses_info{1}.connectivity.pSTG.L))
+        my_log(" ")
+        my_log("   Connectivity (pSTG R Seed): ")
+        my_log("   " + string(analyses_info{1}.connectivity.pSTG.R))
+        my_log("------------------------------------------------------------------------")
+        my_log("   Final rest LI scores have been appended to:")
+        my_log("   " + string(fullfile(analyses_info{1}.data_dir, 'LI_results_rs.csv')))
     end
-    my_log("   Concatenated Rest: ")
-    my_log("   " + string(analyses_info{1}.concat_file))
-    my_log(" ")
-    my_log("   Connectivity (IFG L Seed): ")
-    my_log("   " + string(analyses_info{1}.connectivity.IFG.L))
-    my_log(" ")
-    my_log("   Connectivity (IFG R Seed): ")
-    my_log("   " + string(analyses_info{1}.connectivity.IFG.R))
-    my_log(" ")
-    my_log("   Connectivity (pSTG L Seed): ")
-    my_log("   " + string(analyses_info{1}.connectivity.pSTG.L))
-    my_log(" ")
-    my_log("   Connectivity (pSTG R Seed): ")
-    my_log("   " + string(analyses_info{1}.connectivity.pSTG.R))
-    my_log("------------------------------------------------------------------------")
-    my_log("   Final LI scores have been appended to:")
-    my_log("   " + string(fullfile(analyses_info{1}.data_dir, 'LI_results.csv')))
+    if analyses_info{1}.run_task
+        for i = 1:n_analyses
+            my_log("   Contrast Image for subject " + string(analyses_info{i}.sub_no) + ...
+             ", session " + string(analyses_info{i}.ses_no) + ...
+             ", run " + string(analyses_info{i}.run_no) + ...
+             ", for the " + string(analyses_info{i}.task_name) + " task:")
+            my_log("   " + string(analyses_info{i}.contrast))
+            my_log(" ")
+            my_log("   T-Statistic Image for subject " + string(analyses_info{i}.sub_no) + ...
+             ", session " + string(analyses_info{i}.ses_no) + ...
+             ", run " + string(analyses_info{i}.run_no) + ...
+             ", for the " + string(analyses_info{i}.task_name) + " task:")
+            my_log("   " + string(analyses_info{i}.contrast))
+        end
+        my_log("------------------------------------------------------------------------")
+        my_log("   Final task LI scores have been appended to:")
+        my_log("   " + string(fullfile(analyses_info{1}.data_dir, 'LI_results_tb.csv')))
+    end
     my_log("========================================================================")
    
 

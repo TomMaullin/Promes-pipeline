@@ -1,4 +1,4 @@
-function analysis_info = step10_remove_task(analysis_info)
+function analysis_info = step11_remove_task(analysis_info)
 
     % Load in details
     ses_dir = analysis_info.ses_dir;
@@ -8,7 +8,7 @@ function analysis_info = step10_remove_task(analysis_info)
     run_no = analysis_info.run_no;
     
     % Read in func_file
-    func_file =  analysis_info.func_vol_curr;
+    func_file =  analysis_info.func_vol_curr_rest;
     V_func = spm_vol(func_file);
 
     % Number of volumes
@@ -100,6 +100,6 @@ function analysis_info = step10_remove_task(analysis_info)
     spm_file_merge(V_rest, out_file);
 
     % Update files
-    analysis_info.func_vol_curr = out_file;
+    analysis_info.func_vol_curr_rest = out_file;
 
 end

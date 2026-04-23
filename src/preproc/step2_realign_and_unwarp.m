@@ -52,7 +52,7 @@ function analysis_info = step2_realign_and_unwarp(analysis_info)
     spm_jobman('run', matlabbatch);
 
     % Update analysis info
-    analysis_info.func_vol_curr = fullfile(char(ses_dir), 'func', sprintf('usub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
+    analysis_info.func_vol_curr = prepend(analysis_info.func_vol_curr, 'u');
     analysis_info.func_mean_curr = fullfile(char(ses_dir), 'func', sprintf('meanusub-%03d_ses-%02d_task-%s_run-%d_bold.nii', sub_no, ses_no, task_name, run_no));
     analysis_info.realign_params = fullfile(char(ses_dir), 'func', sprintf('rp_sub-%03d_ses-%02d_task-%s_run-%d_bold.txt', sub_no, ses_no, task_name, run_no));
 

@@ -1,4 +1,4 @@
-function analyses_info = step15_cleanup_connectivity(analyses_info)
+function analyses_info = step16_cleanup_connectivity(analyses_info)
 
     % Load in details
     sub_dir = analyses_info{1}.sub_dir;
@@ -8,7 +8,7 @@ function analyses_info = step15_cleanup_connectivity(analyses_info)
 
     % Get the number of analyses
     n_analyses = numel(analyses_info);
-    
+
     % Inform user
     my_log('Cleaning up files...')
 
@@ -16,10 +16,12 @@ function analyses_info = step15_cleanup_connectivity(analyses_info)
     src_dir = fullfile(char(sub_dir), 'conn_concatenated', 'results', 'firstlevel', 'SBC_01');
     
     % Move files
-    % movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source001.nii'), fullfile(char(sub_dir), 'conn_LI_IFG_L.nii'));
-    % movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source002.nii'), fullfile(char(sub_dir), 'conn_LI_IFG_R.nii'));
-    % movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source003.nii'), fullfile(char(sub_dir), 'conn_LI_pSTG_L.nii'));
-    % movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source004.nii'), fullfile(char(sub_dir), 'conn_LI_pSTG_R.nii'));
+    if analyses_info{1}.run_rest
+        movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source001.nii'), fullfile(char(sub_dir), 'conn_rs_IFG_L.nii'));
+        movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source002.nii'), fullfile(char(sub_dir), 'conn_rs_IFG_R.nii'));
+        movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source003.nii'), fullfile(char(sub_dir), 'conn_rs_pSTG_L.nii'));
+        movefile(fullfile(src_dir, 'BETA_Subject001_Condition001_Source004.nii'), fullfile(char(sub_dir), 'conn_rs_pSTG_R.nii'));
+    end
 
     % Remove denoising files
     delete(fullfile(char(sub_dir),'conn_concatenated.mat'));
@@ -45,23 +47,25 @@ function analyses_info = step15_cleanup_connectivity(analyses_info)
 
         % Get analysis info struct
         analysis_info = analyses_info{i};
+        analysis_info = rmfield(analysis_info, 'func_mean_curr');
 
         % Remove dead fields
-        analysis_info = rmfield(analysis_info, 'vdm5');
-        analysis_info = rmfield(analysis_info, 'func_mean_curr');
-        analysis_info = rmfield(analysis_info, 'realign_params');
-        analysis_info = rmfield(analysis_info, 'c1_file_curr');
-        analysis_info = rmfield(analysis_info, 'c2_file_curr');
-        analysis_info = rmfield(analysis_info, 'c3_file_curr');
-        analysis_info = rmfield(analysis_info, 'deform');
-        analysis_info = rmfield(analysis_info, 'art_outliers');
+        if analysis_info.run_rest
+            analysis_info = rmfield(analysis_info, 'vdm5');
+            analysis_info = rmfield(analysis_info, 'realign_params');
+            analysis_info = rmfield(analysis_info, 'c1_file_curr');
+            analysis_info = rmfield(analysis_info, 'c2_file_curr');
+            analysis_info = rmfield(analysis_info, 'c3_file_curr');
+            analysis_info = rmfield(analysis_info, 'deform');
+            analysis_info = rmfield(analysis_info, 'art_outliers');
+        end
 
 
         % Update connectivity 
-        connectivity.IFG.L = fullfile(char(sub_dir), 'conn_LI_IFG_L.nii');
-        connectivity.IFG.R = fullfile(char(sub_dir), 'conn_LI_IFG_R.nii');
-        connectivity.pSTG.L = fullfile(char(sub_dir), 'conn_LI_pSTG_L.nii');
-        connectivity.pSTG.R = fullfile(char(sub_dir), 'conn_LI_pSTG_R.nii');
+        connectivity.IFG.L = fullfile(char(sub_dir), 'conn_rs_IFG_L.nii');
+        connectivity.IFG.R = fullfile(char(sub_dir), 'conn_rs_IFG_R.nii');
+        connectivity.pSTG.L = fullfile(char(sub_dir), 'conn_rs_pSTG_L.nii');
+        connectivity.pSTG.R = fullfile(char(sub_dir), 'conn_rs_pSTG_R.nii');
         analysis_info.connectivity = connectivity;
 
         % Output analysis info

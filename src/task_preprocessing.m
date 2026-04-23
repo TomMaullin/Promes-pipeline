@@ -23,10 +23,6 @@ function analysis_info = task_preprocessing(analysis_info)
     % Last edited: 25/03/26
     % ---------------------------------------------------------------------
 
-
-    % Unpack ses_dir
-    ses_dir = analysis_info.ses_dir;
-
     % Run VDM calculation
     analysis_info = step1_distortion_correction(analysis_info);
 
@@ -47,5 +43,8 @@ function analysis_info = task_preprocessing(analysis_info)
 
     % Run smoothing
     analysis_info = step7_smooth(analysis_info);
+
+    % Run task glm
+    analysis_info = step8_task_glm(analysis_info);
 
 end
