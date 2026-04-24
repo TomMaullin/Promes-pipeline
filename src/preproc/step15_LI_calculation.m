@@ -104,6 +104,17 @@ function analyses_info = step15_LI_calculation(analyses_info)
     % Save rest results if we have them
     if analyses_info{1}.run_rest
 
+        % Save results
+        out_file_rs = fullfile(analyses_info{i}.data_dir, 'LI_results_rs.csv');
+
+
+        % If the file doesn't exist, create it with headers
+        if ~exist(out_file_rs, 'file')
+            fid = fopen(out_file_rs, 'w');
+            fprintf(fid, 'subject_number,LI_IFG_L,LI_IFG_R,LI_pSTG_L,LI_pSTG_R\n');
+            fclose(fid);
+        end
+
         % Store outputs
         for i = 1:n_analyses
     
@@ -112,24 +123,15 @@ function analyses_info = step15_LI_calculation(analyses_info)
             analyses_info{i}.LI_score.IFG.R = LI_scores(2);
             analyses_info{i}.LI_score.pSTG.L = LI_scores(3);
             analyses_info{i}.LI_score.pSTG.R = LI_scores(4);
-    
-        end
-     
-        % Save results
-        out_file_rs = fullfile(analyses_info{1}.data_dir, 'LI_results_rs.csv');
-    
-        % If the file doesn't exist, create it with headers
-        if ~exist(out_file_rs, 'file')
-            fid = fopen(out_file_rs, 'w');
-            fprintf(fid, 'subject_number,LI_IFG_L,LI_IFG_R,LI_pSTG_L,LI_pSTG_R\n');
+  
+            % Append new row
+            fid = fopen(out_file_rs, 'a');
+            fprintf(fid, 'sub-%03d,%.4f,%.4f,%.4f,%.4f\n', ...
+                sub_no, LI_scores(1), LI_scores(2), LI_scores(3), LI_scores(4));
             fclose(fid);
+
         end
-        
-        % Append new row
-        fid = fopen(out_file_rs, 'a');
-        fprintf(fid, 'sub-%03d,%.4f,%.4f,%.4f,%.4f\n', ...
-            sub_no, LI_scores(1), LI_scores(2), LI_scores(3), LI_scores(4));
-        fclose(fid);
+    
 
     end
 
