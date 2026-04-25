@@ -14,7 +14,13 @@ function analyses_info = connectivity(analyses_info)
     % Compute LIs
     analyses_info = step15_LI_calculation(analyses_info);
 
-    % Compute LIs
-    analyses_info = step16_cleanup_connectivity(analyses_info);
+
+    % Check if we need to run cleanup
+    if analyses_info{1}.cleanup
+
+        % Compute LIs
+        analyses_info = step16_cleanup_connectivity(analyses_info);
+
+    end
 
 end

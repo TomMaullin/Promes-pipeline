@@ -12,7 +12,7 @@ function analyses_info = step15_LI_calculation(analyses_info)
     sub_no = analyses_info{1}.sub_no;
 
     % Get the number of analyses
-    n_analyses = numel(analyses_info{1});
+    n_analyses = numel(analyses_info);
 
     % Check LI toolbox folder inside SPM
     li_dir = fullfile(fileparts(which('spm')), 'toolbox', 'LI');

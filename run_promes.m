@@ -1,4 +1,4 @@
-function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest)
+function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest,cleanup)
     
     % Get path of this function
     promes_function = mfilename('fullpath');
@@ -60,6 +60,7 @@ function analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,
         analysis_info = {};
         analysis_info.run_task = run_task;
         analysis_info.run_rest = run_rest;
+        analysis_info.cleanup = cleanup;
         analysis_info.data_dir = data_dir;
         analysis_info.sub_dir = sub_dir;
         analysis_info.ses_dir = ses_dir;

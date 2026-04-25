@@ -14,7 +14,12 @@ function analysis_info = rest_preprocessing(analysis_info)
 
     end
     
-    % Run cleanup
-    analysis_info = step12_cleanup_preproc(analysis_info);
+    % Check if we need to run cleanup
+    if analysis_info.cleanup
+    
+        % Run cleanup
+        analysis_info = step12_cleanup_preproc(analysis_info);
+
+    end
 
 end

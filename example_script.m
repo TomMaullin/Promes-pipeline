@@ -13,5 +13,10 @@ task_names = % TO FILL
 run_task = % TO FILL
 run_rest = % TO FILL
 
+
+% Change this to false if you don't want to run the cleanup step (this step
+% removes all the files from preprocessing that we don't need anymore)
+cleanup = true;
+
 % Run promes for data directory
-analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
+analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest,cleanup);
