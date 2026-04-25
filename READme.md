@@ -35,8 +35,8 @@ data_dir = % TO FILL
 
 % Session, subject and run number
 ses_nos = % TO FILL
-sub_nos = % TO FILL
 run_nos = % TO FILL
+sub_nos = % TO FILL
 
 % Name of task
 task_names = % TO FILL
@@ -45,8 +45,12 @@ task_names = % TO FILL
 run_task = % TO FILL
 run_rest = % TO FILL
 
+% Change this to false if you don't want to run the cleanup step (this step
+% removes all the files from preprocessing that we don't need anymore)
+cleanup = true;
+
 % Run promes for data directory
-analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
+analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest,cleanup);
 ```
 
 To run the pipeline, you must replace `TO FILL` with the appropriate analysis details and then run the script in MatLab. To explain what these details should look like, here are a few examples.
@@ -70,11 +74,15 @@ task_names = "AudCat";
 run_task = false;
 run_rest = true;
 
+% Change this to false if you don't want to run the cleanup step (this step
+% removes all the files from preprocessing that we don't need anymore)
+cleanup = true;
+
 % Run promes for data directory
 analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
 ```
 
-Here, we have set `run_rest=true` - this means the code will generate LIs for concatenated rest. We have also set `run_task=false;` - this means we *will not* generate task-based LIs. If you were to change this to `run_task=true;`, task-based LIs *would* be generated.
+Here, we have set `run_rest=true` - this means the code will generate LIs for concatenated rest. We have also set `run_task=false;` - this means we *will not* generate task-based LIs. If you were to change this to `run_task=true;`, task-based LIs *would* be generated. Setting `cleanup=true;` tells the code to delete any files which were created during preprocessing that we don't need to save for the final analysis. Unless we have good reason to look at those files (e.g. something has gone wrong and we need to work out what), it makes sense to leave this option set to `true`.
 
 Note that `'C:/Documents/BIDS'` should be replaced with the path to the BIDS dataset on your computer. 
 
@@ -95,6 +103,10 @@ task_names = ["AudCat","AudCat"];
 % Run task and rest pipelines? (fill in true to run and false to not run)
 run_task = false;
 run_rest = true;
+
+% Change this to false if you don't want to run the cleanup step (this step
+% removes all the files from preprocessing that we don't need anymore)
+cleanup = true;
 
 % Run promes for data directory
 analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
@@ -124,6 +136,10 @@ task_names = ["covertverb","covertverb","AudCat","AudCat"];
 % Run task and rest pipelines? (fill in true to run and false to not run)
 run_task = false;
 run_rest = true;
+
+% Change this to false if you don't want to run the cleanup step (this step
+% removes all the files from preprocessing that we don't need anymore)
+cleanup = true;
 
 % Run promes for data directory
 analyses_info = run_promes(data_dir,ses_nos,sub_nos,task_names,run_nos,run_task,run_rest);
@@ -181,7 +197,7 @@ After an analysis you will have the following files:
 
 The final LI scores will be appended to `BIDS/LI_results.csv` (if the file does not already exist, it will be created). **Warning:** Every time you re-run the code the LI scores will be added to this file, so re-running the code may result in duplicate entries in the file.
 
-> If you would like me to modify the code to prevent it deleting any of the files output during preprocessing, please let me know - I am happy to amend this.
+> Note: If you set `cleanup` to `false`, many (many) more files will be output. Be wary of doing this as it will eat your computer's memory very quickly if you try and output all of these files for all of the subjects.
 
 
 *Page Author: Tom Maullin. Last Updated 23/04/26.*
