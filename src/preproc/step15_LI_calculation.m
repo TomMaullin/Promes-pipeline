@@ -105,8 +105,7 @@ function analyses_info = step15_LI_calculation(analyses_info)
     if analyses_info{1}.run_rest
 
         % Save results
-        out_file_rs = fullfile(analyses_info{i}.data_dir, 'LI_results_rs.csv');
-
+        out_file_rs = fullfile(analyses_info{1}.data_dir, 'LI_results_rs.csv');
 
         % If the file doesn't exist, create it with headers
         if ~exist(out_file_rs, 'file')
