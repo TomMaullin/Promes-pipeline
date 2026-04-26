@@ -57,7 +57,9 @@ function analyses_info = step16_cleanup_connectivity(analyses_info)
 
         % Remove dead fields
         if analysis_info.run_rest
-            analysis_info = rmfield(analysis_info, 'vdm5');
+            if isfield(analysis_info, 'vdm5')
+                analysis_info = rmfield(analysis_info, 'vdm5');
+            end
             analysis_info = rmfield(analysis_info, 'realign_params');
             analysis_info = rmfield(analysis_info, 'c1_file_curr');
             analysis_info = rmfield(analysis_info, 'c2_file_curr');
