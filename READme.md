@@ -200,4 +200,44 @@ The final LI scores will be appended to `BIDS/LI_results.csv` (if the file does 
 > Note: If you set `cleanup` to `false`, many (many) more files will be output. Be wary of doing this as it will eat your computer's memory very quickly if you try and output all of these files for all of the subjects.
 
 
-*Page Author: Tom Maullin. Last Updated 23/04/26.*
+## LI_Extra
+
+The `LI_Extra` code has been added to combine the resting state connectivity maps. It does this by masking the right side of the IFG-L connectivity map, the left side of the IGL-R connectivity map and then adding the resulting images together. It then repeates this process for the pSTG seeds as well. Once it has a single image for IFG and a single image for pSTG, it adds these images together and computes an LI of the result.
+
+### Usage: Examples
+
+To run the LI_Extra code, open the `example_LI_script.m` file which can be found in the `LI_extra` folder. To run the code you need to fill out the BIDS directory and the subject numbers you want to compute the LIs for.
+
+For instance, you can run the code for subjects 1 and 8 as follows:
+
+```
+% Inputs
+bids_dir = 'C:\Documents\BIDS';
+sub_nos = [1 8];
+
+% Run combined LI computation
+compute_combined_LIs(bids_dir, sub_nos);
+```
+
+where you must change the bids_dir to the correct directory on your machine. You can also run for just a single subject, say subject 1, like so:
+
+```
+% Inputs
+bids_dir = 'C:\Documents\BIDS';
+sub_nos = 1;
+
+% Run combined LI computation
+compute_combined_LIs(bids_dir, sub_nos);
+```
+
+ > **Note:** You may find that when you first run this code you get an error which says something to the effect of `a path is missing`. If so, within the error message there will be a hyperlink that says something along the lines of `add to path`. If this happens, click the `add to path` option and try running again.
+
+
+### Outputs
+
+For every subject, this code will output a file named `BIDS/sub-???/conn_rs_combined.nii`. This is the image the lateralisation index was computed from (e.g. the sum of the masked IFG and pSTG images). 
+
+The final LIs will be saved to a file named `BIDS/LI_results_rs_combined.csv`. If the file does not exist, the code will create it. If the file does exist, it will add new results to the existing file. Please note that this means, as before, that you may get repeat entries if you run the code multiple times.
+
+
+*Page Author: Tom Maullin. Last Updated 30/04/26.*
