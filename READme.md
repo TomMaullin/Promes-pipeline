@@ -202,7 +202,7 @@ The final LI scores will be appended to `BIDS/LI_results.csv` (if the file does 
 
 ## LI_Extra
 
-The `LI_Extra` code has been added to combine the resting state connectivity maps. It does this by masking the right side of the IFG-L connectivity map, the left side of the IGL-R connectivity map and then adding the resulting images together. It then repeates this process for the pSTG seeds as well. Once it has a single image for IFG and a single image for pSTG, it adds these images together and computes an LI of the result.
+The `LI_Extra` code has been added to combine the resting state connectivity maps. It does this by masking the right side of the IFG-L connectivity map, the left side of the IGL-R connectivity map and then adding the resulting images together. It then repeates this process for the pSTG seeds as well. Once it has a single image for IFG and a single image for pSTG, it adds these images together and computes an LI from the resulting image.
 
 ### Usage: Examples
 
@@ -219,9 +219,9 @@ sub_nos = [1 8];
 compute_combined_LIs(bids_dir, sub_nos);
 ```
 
-where you must change the bids_dir to the correct directory on your machine. 
+where you must change the `bids_dir` to the correct directory on your machine. 
 
- > **Note:** You must run the preprocessing pipeline on the subjects for this code to run. If the files `BIDS/sub-???/conn_rs_IFG_L.nii`, `BIDS/sub-???/conn_rs_IFG_R.nii` , `BIDS/sub-???/conn_rs_pSTG_L.nii`  and `BIDS/sub-???/conn_rs_pSTG_R.nii`  do not already exist the code will error.
+ > **Note:** You must have already run the preprocessing pipeline on the subjects for this code to work. If the files `BIDS/sub-???/conn_rs_IFG_L.nii`, `BIDS/sub-???/conn_rs_IFG_R.nii` , `BIDS/sub-???/conn_rs_pSTG_L.nii`  and `BIDS/sub-???/conn_rs_pSTG_R.nii`  do not already exist the code will error.
 
 You can also run for just a single subject, say subject 1, like so:
 
