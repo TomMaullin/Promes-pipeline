@@ -219,7 +219,11 @@ sub_nos = [1 8];
 compute_combined_LIs(bids_dir, sub_nos);
 ```
 
-where you must change the bids_dir to the correct directory on your machine. You can also run for just a single subject, say subject 1, like so:
+where you must change the bids_dir to the correct directory on your machine. 
+
+ > **Note:** You must run the preprocessing pipeline on the subjects for this code to run. If the files `BIDS/sub-???/conn_rs_IFG_L.nii`, `BIDS/sub-???/conn_rs_IFG_R.nii` , `BIDS/sub-???/conn_rs_pSTG_L.nii`  and `BIDS/sub-???/conn_rs_pSTG_R.nii`  do not already exist the code will error.
+
+You can also run for just a single subject, say subject 1, like so:
 
 ```
 % Inputs
