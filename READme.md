@@ -200,13 +200,13 @@ The final LI scores will be appended to `BIDS/LI_results.csv` (if the file does 
 > Note: If you set `cleanup` to `false`, many (many) more files will be output. Be wary of doing this as it will eat your computer's memory very quickly if you try and output all of these files for all of the subjects.
 
 
-## LI_Extra
+## LI_Extra - Resting State
 
-The `LI_Extra` code has been added to combine the resting state connectivity maps. It does this by masking the right side of the IFG-L connectivity map, the left side of the IGL-R connectivity map and then adding the resulting images together. It then repeates this process for the pSTG seeds as well. Once it has a single image for IFG and a single image for pSTG, it adds these images together and computes an LI from the resulting image.
+Code has been added to the `LI_extra` folder to combine the resting state connectivity maps. The code achieves this by masking the right side of the IFG-L connectivity map, the left side of the IGL-R connectivity map and then adding the resulting images together. It then repeates this process for the pSTG seeds as well. Once it has a single image for IFG and a single image for pSTG, it adds these images together and computes an LI from the resulting image.
 
 ### Usage: Examples
 
-To run the LI_Extra code, open the `example_LI_script.m` file which can be found in the `LI_extra` folder. To run the code you need to fill out the BIDS directory and the subject numbers you want to compute the LIs for.
+To run the LI_Extra resting state code, open the `example_LI_script_rest.m` file which can be found in the `LI_extra` folder. To run the code you need to fill out the BIDS directory and the subject numbers you want to compute the LIs for.
 
 For instance, you can run the code for subjects 1 and 8 as follows:
 
@@ -244,4 +244,34 @@ For every subject, this code will output a file named `BIDS/sub-???/conn_rs_comb
 The final LIs will be saved to a file named `BIDS/LI_results_rs_combined.csv`. If the file does not exist, the code will create it. If the file does exist, it will add new results to the existing file. Please note that this means, as before, that you may get repeat entries if you run the code multiple times.
 
 
-*Page Author: Tom Maullin. Last Updated 30/04/26.*
+## LI_Extra - Task Based
+
+Code has also been added to the `LI_extra` folder to mask the task-based contrast maps and compute LIs from them. The mask applied is `language_mask.nii`, which is a conjunction (union/overlap) of the IFG and STG language masks and can be found in the `LI_extra` folder alongside the code.
+
+### Usage: Examples
+
+To run the LI_Extra task based code, open the `example_LI_script_task.m` file which can be found in the `LI_extra` folder. To run the code you need to fill out the BIDS directory, subject numbers, session numbers, run numbers and task names that you want to compute the LIs for.
+
+For instance, you can run the code for subjects 1 and 8 as follows:
+
+```
+% Inputs
+bids_dir = 'C:\Documents\BIDS';
+sub_nos = [1 8];
+ses_nos = [1 3];
+run_nos = [1 2];
+task_names = ["covertverb","covertverb"];
+
+% Run masked LI computation
+compute_masked_task_LIs(bids_dir, sub_nos, ses_nos, run_nos, task_names);
+```
+The above script would run LI computation for the covertverb task performed by subject 1 in session 1, run 1, and (seperately) for the covertverb task performed by subject 8 in session 3, run 2. All LI's are computed from masked contrast images.
+
+ > **Note:** The PROMES pipeline must have been run for the listed (subject,session,run,task)-combinations prior to LI computation. Otherwise, the LI_Extra code won't be able to find the contrast maps to compute LIs from!
+
+### Outputs
+
+The final LIs will be saved to a file named `BIDS/LI_results_tb_masked.csv`. If the file does not exist, the code will create it. If the file does exist, it will add new results to the existing file. As before, you may get repeat entries if you run the code multiple times.
+
+
+*Page Author: Tom Maullin. Last Updated 07/05/26.*
