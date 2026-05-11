@@ -42,17 +42,18 @@ function run_analysis(filename)
     L = [0 1]';
     
     % Run analysis
-    stats = contrast_ttest(y, X, L);
+    stats = contrast_ttest_positive(y, X, L);
     
     % Print result
     fprintf('\n==========================================\n');
-    fprintf('Contrast test: Effect of task LIs on VCI\n');
+    fprintf('Contrast test: Effect of task IPS on VCI\n');
     fprintf('==========================================\n');
     
     fprintf('Contrast Estimate = %.4f\n',    stats.effect);
     fprintf('t                 = %.4f\n',  stats.t_effect);
-    fprintf('p                 = %.4f\n',  stats.p_effect);
+    fprintf('p                 = %.4f\n',1-stats.p_effect);
     fprintf('(computed using n = %d subjects)\n', stats.n);
+    fprintf('(Test was one-sided)\n');
         
     % ---------------------------------------------------------------------
     % Rest LI test
@@ -69,17 +70,18 @@ function run_analysis(filename)
     L = [0 1]';
     
     % Run analysis
-    stats = contrast_ttest(y, X, L);
+    stats = contrast_ttest_positive(y, X, L);
     
     % Print result
     fprintf('\n==========================================\n');
-    fprintf('Contrast test: Effect of rest LIs on VCI\n');
+    fprintf('Contrast test: Effect of rest IPS on VCI\n');
     fprintf('==========================================\n');
     
     fprintf('Contrast Estimate = %.4f\n',    stats.effect);
     fprintf('t                 = %.4f\n',  stats.t_effect);
-    fprintf('p                 = %.4f\n',  stats.p_effect);
+    fprintf('p                 = %.4f\n',1-stats.p_effect);
     fprintf('(computed using n = %d subjects)\n', stats.n);
+    fprintf('(Test was one-sided)\n');
 
     % ---------------------------------------------------------------------
     % Task vs rest comparison
@@ -108,7 +110,7 @@ function run_analysis(filename)
     fprintf('t                 = %.4f\n',  stats.t_effect);
     fprintf('p                 = %.4f\n',  stats.p_effect);
     fprintf('(computed using n = %d subjects)\n', stats.n);
-    
+    fprintf('(Test was two-sided)\n'); 
 
     % ---------------------------------------------------------------------
     % Correlation coefficients and pair plots for IPS
