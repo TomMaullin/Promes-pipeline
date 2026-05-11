@@ -1,4 +1,5 @@
 my_promes_script.m
 *.ps
 *.asv
+final_analysis/my_analysis_script.m
 LI_extra/my_LI_script*.m
